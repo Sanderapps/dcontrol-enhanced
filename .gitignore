@@ -1,6 +1,7 @@
 # Runtime state and temporary files
 data/dcontrol-enhanced-state.json
 data/dcontrol-enhanced-state.json.tmp
+data/dcontrol/dControl.exe
 *.log
 *.tmp
 *.zip

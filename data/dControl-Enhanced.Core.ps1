@@ -135,7 +135,7 @@ function Apply-Settings {
 
 function Run-DControl([string]$Instruction) {
     if(-not(Test-Path -LiteralPath $dControl -PathType Leaf)){
-        throw ('dControl.exe not found: '+$dControl)
+        throw ('dControl.exe not found. Download it from the official Sordum page and place it at: '+$dControl)
     }
     Write-Host $Instruction -ForegroundColor Yellow
     Write-Host 'Close dControl after choosing the requested action.'

@@ -8,6 +8,7 @@ function Check([bool]$Condition,[string]$Message){
 }
 
 $required=@(
+    'DCONTROL-MENU.bat',
     'ATIVAR-DEFENDER-ENHANCED.bat',
     'DESABILITAR-DEFENDER-ENHANCED.bat',
     'VERIFICAR-STATUS-DEFENDER.bat',
@@ -15,7 +16,7 @@ $required=@(
     'data\dControl-Enhanced.ps1',
     'data\dControl-Enhanced.Core.ps1',
     'data\Desativar-TamperProtection.ps1',
-    'data\dcontrol\dControl.exe'
+    'data\dcontrol\dControl.ini'
 )
 foreach($item in $required){
     Check (Test-Path -LiteralPath (Join-Path $root $item)) ('Exists: '+$item)
@@ -31,6 +32,12 @@ foreach($item in $flowBats){
     Check ($text -match 'set "rc=%errorLevel%"') ('Captures exit code: '+$item)
     Check ($text -match 'exit /b %rc%') ('Propagates exit code: '+$item)
 }
+$menu=Get-Content -LiteralPath (Join-Path $root 'DCONTROL-MENU.bat') -Raw
+foreach($item in $flowBats){
+    Check ($menu -match [regex]::Escape($item)) ('Menu references: '+$item)
+}
+Check ($menu -match [regex]::Escape('DESATIVAR-TAMPER-PROTECTION.bat')) 'Menu references Tamper launcher'
+Check ($menu -match [regex]::Escape('TESTAR-PACOTE.bat')) 'Menu references package tests'
 $tamperBat=Get-Content -LiteralPath (Join-Path $root 'DESATIVAR-TAMPER-PROTECTION.bat') -Raw
 Check ($tamperBat -match [regex]::Escape('%~dp0data\Desativar-TamperProtection.ps1')) 'Tamper launcher target is correct'
 Check (-not (Test-Path -LiteralPath (Join-Path $root 'data\ativar-defender.reg'))) 'Legacy enable REG was removed'
@@ -65,9 +72,14 @@ Check ($saveIndex -ge 0 -and $saveIndex -lt $runIndex) 'Snapshot precedes dContr
 $tamper=Get-Content -LiteralPath (Join-Path $root 'data\Desativar-TamperProtection.ps1') -Raw
 Check ($tamper -notmatch 'Set-ItemProperty') 'Tamper helper does not force registry values'
 
+$exe=Join-Path $root 'data\dcontrol\dControl.exe'
 $expected='1EF6C1A4DFDC39B63BFE650CA81AB89510DE6C0D3D7C608AC5BE80033E559326'
-$actual=(Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $root 'data\dcontrol\dControl.exe')).Hash
-Check ($actual -eq $expected) 'dControl.exe matches the vendor SHA-256'
+if(Test-Path -LiteralPath $exe){
+    $actual=(Get-FileHash -Algorithm SHA256 -LiteralPath $exe).Hash
+    Check ($actual -eq $expected) 'dControl.exe matches the vendor SHA-256'
+} else {
+    Write-Host '[WARN] dControl.exe is not distributed; obtain it from Sordum.' -ForegroundColor Yellow
+}
 
 if($failures.Count){
     Write-Host ''
