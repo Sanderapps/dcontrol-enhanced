@@ -1,0 +1,12 @@
+# Runtime state and temporary files
+data/dcontrol-enhanced-state.json
+data/dcontrol-enhanced-state.json.tmp
+*.log
+*.tmp
+*.zip
+
+# Editor and Windows metadata
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini

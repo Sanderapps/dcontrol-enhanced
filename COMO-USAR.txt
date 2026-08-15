@@ -1,0 +1,50 @@
+GUIA RAPIDO - DCONTROL ENHANCED
+================================
+
+IMPORTANTE
+----------
+Desabilitar o Microsoft Defender deixa o computador sem a protecao antivirus
+nativa. Use somente em ambiente controlado e com outra protecao instalada.
+
+1. TAMPER PROTECTION
+--------------------
+Execute DESATIVAR-TAMPER-PROTECTION.bat.
+
+O Windows Security sera aberto para a alteracao manual. O pacote nao tenta mais
+forcar Tamper Protection pelo Registro, pois o Windows protege e pode ignorar
+essa alteracao. O script verifica o resultado antes de prosseguir.
+
+2. DESABILITAR
+--------------
+Execute DESABILITAR-DEFENDER-ENHANCED.bat como Administrador.
+
+Quando o dControl abrir:
+  1. Clique em Disable Windows Defender.
+  2. Aguarde o estado mudar.
+  3. Feche o dControl.
+
+O pacote so aplica as configuracoes extras depois de confirmar que o Defender
+foi desabilitado. Antes disso, salva os valores originais em:
+  data\dcontrol-enhanced-state.json
+
+Nao apague esse arquivo enquanto o Defender estiver desabilitado.
+
+3. ATIVAR
+---------
+Execute ATIVAR-DEFENDER-ENHANCED.bat como Administrador.
+
+O pacote restaura primeiro os valores originais do snapshot. Quando o dControl
+abrir, clique em Enable Windows Defender e feche a janela. Reinicie o Windows e
+atualize a inteligencia de seguranca do Defender.
+
+4. VERIFICAR
+------------
+Execute VERIFICAR-STATUS-DEFENDER.bat. Essa verificacao e somente leitura e nao
+exige elevacao, embora alguns detalhes possam depender das permissoes do Windows.
+
+LIMITES
+-------
+- O dControl 2.1 possui interface grafica; a escolha ainda e manual.
+- Politicas antigas podem ser ignoradas em versoes recentes do Windows.
+- O pacote nao renomeia nem remove executaveis protegidos do Windows.
+- Falhas retornam codigo diferente de zero; nao confie apenas na mensagem visual.

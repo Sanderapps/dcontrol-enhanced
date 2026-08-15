@@ -1,0 +1,54 @@
+DCONTROL ENHANCED - EDICAO REVISADA
+====================================
+
+Este pacote coordena o dControl 2.1 e um pequeno conjunto de politicas extras.
+A revisao prioriza verificacao, reversibilidade e mensagens de erro confiaveis.
+
+ARQUIVOS PRINCIPAIS
+-------------------
+DESATIVAR-TAMPER-PROTECTION.bat
+    Abre o Windows Security e confirma manualmente o estado de Tamper Protection.
+
+DESABILITAR-DEFENDER-ENHANCED.bat
+    Requer Administrador. Abre o dControl, confirma o estado desabilitado, salva
+    os valores originais do Registro e somente entao aplica politicas extras.
+
+ATIVAR-DEFENDER-ENHANCED.bat
+    Requer Administrador. Restaura o snapshot original, abre o dControl e confirma
+    que o Defender voltou a ficar ativo.
+
+VERIFICAR-STATUS-DEFENDER.bat
+    Mostra estado operacional, Tamper Protection, snapshot e servicos relevantes.
+    Nao altera configuracoes.
+
+SEGURANCA E RECUPERACAO
+-----------------------
+O snapshot data\dcontrol-enhanced-state.json e criado na primeira desativacao.
+Ele preserva se cada valor ja existia, seu conteudo e seu tipo. Na ativacao, os
+valores anteriores sao restaurados; valores criados pelo pacote sao removidos.
+
+Se uma gravacao falhar, o script tenta rollback imediato. Se a restauracao ficar
+incompleta, o snapshot e preservado e o processo termina com erro.
+
+O pacote nao tenta mais:
+- renomear MpCmdRun.exe, MSASCui.exe ou MsMpEng.exe;
+- alterar diretamente TamperProtection pelo Registro;
+- assumir que Tamper Protection esta desligado quando a consulta falha;
+- anunciar sucesso depois de erro do PowerShell.
+
+EXECUTAVEL DE TERCEIRO
+----------------------
+data\dcontrol\dControl.exe e o Defender Control 2.1 da Sordum.
+SHA-256:
+1EF6C1A4DFDC39B63BFE650CA81AB89510DE6C0D3D7C608AC5BE80033E559326
+
+O executavel nao possui assinatura Authenticode. O hash acima coincide com o
+publicado pelo fornecedor, mas isso nao elimina os riscos de desativar o antivirus.
+
+COMPATIBILIDADE
+---------------
+O codigo e compativel com Windows PowerShell 5.1. A eficacia das politicas depende
+da versao, edicao, gerenciamento corporativo e plataforma atual do Defender.
+Nao existe garantia de desativacao permanente em toda versao do Windows 10/11.
+
+Leia COMO-USAR.txt antes de executar.
